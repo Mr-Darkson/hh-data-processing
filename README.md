@@ -13,3 +13,9 @@
 ```bash
 git clone <your-repository-url>
 cd hh-data-processing
+
+
+## Запуск
+```bash
+python app.py hh.csv
+```
