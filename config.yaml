@@ -1,0 +1,45 @@
+# Конфигурация для HH данных (резюме с hh.ru)
+data:
+  target_column: "ЗП"           # Колонка с зарплатой
+  chunksize: 50000              # Обработка частями для больших файлов
+  use_chunks: true
+  random_state: 42
+
+cleaning:
+  # Колонки для удаления
+  drop_columns: ["Unnamed: 0"]  # Индексная колонка
+  
+  # Стратегии заполнения пропусков
+  fillna:
+    numeric: 0                  # Быстрая замена median
+    categorical: "Не указано"   # Специфично для HH
+    
+  # Обработка выбросов (отключена для скорости)
+  outliers:
+    method: "none"
+
+encoding:
+  categorical_method: "onehot"  # onehot или label
+  min_frequency: 0.01           # Игнорировать редкие категории (<1%)
+  
+  # Особые обработчики для HH
+  text_columns_handling: "drop"  # drop, hash, или truncate
+
+scaling:
+  method: "robust"      # robust лучше для зарплат (устойчив к выбросам)
+  with_centering: true
+  with_scaling: true
+
+features:
+  # Инженерия признаков (упрощена для скорости)
+  create_interactions: false
+  polynomial_degree: 1
+  
+  # Обработка текстовых полей HH
+  max_text_length: 100    # Максимальная длина текстовых полей
+  drop_long_text: true    # Удалять слишком длинные тексты
+
+output:
+  format: "npy"           # Формат выходных файлов
+  compress: false         # Сжатие выходных данных
+  save_parsed_stats: true # Сохранять статистику парсинга
